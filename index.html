@@ -1,104 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8" />
-<title>Will You Be My Valentine?</title>
-<style>
-    body {
-        margin: 0;
-        height: 100vh;
-        background: #ffe6f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-    }
-
-    .card {
-        text-align: center;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        position: relative;
-    }
-
-    h1 {
-        color: #ff4d88;
-    }
-
-    button {
-        padding: 15px 30px;
-        margin: 20px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        position: absolute;
-        transition: 0.2s;
-    }
-
-    #yes {
-        background-color: #ff4d88;
-        color: white;
-        position: static;
-    }
-
-    #no {
-        background-color: #ccc;
-    }
-
-    .result {
-        text-align: center;
-    }
-
-    .result img {
-        max-width: 80%;
-        border-radius: 20px;
-        margin-top: 20px;
-    }
-</style>
-</head>
-
-<body>
-
-<div class="card">
-    <h1>Will you be my Valentine? ❤️</h1>
-    <button id="yes" onclick="yesClicked()">Yes 💖</button>
-    <button id="no">No 🙈</button>
-</div>
-
 <script>
-    const noBtn = document.getElementById('no');
+const noBtn = document.getElementById('no');
 
-    document.addEventListener('mousemove', function(e) {
-        const rect = noBtn.getBoundingClientRect();
-        const dx = e.clientX - rect.left;
-        const dy = e.clientY - rect.top;
+let btnX = 200;
+let btnY = 200;
 
-        if (Math.abs(dx) < 100 && Math.abs(dy) < 100) {
-            moveButton();
-        }
-    });
+noBtn.style.left = btnX + 'px';
+noBtn.style.top = btnY + 'px';
 
-    function moveButton() {
-        const maxX = window.innerWidth - noBtn.offsetWidth;
-        const maxY = window.innerHeight - noBtn.offsetHeight;
+document.addEventListener('mousemove', function(e) {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
 
-        noBtn.style.left = Math.random() * maxX + 'px';
-        noBtn.style.top = Math.random() * maxY + 'px';
+    const rect = noBtn.getBoundingClientRect();
+    const dx = mouseX - rect.left;
+    const dy = mouseY - rect.top;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // If mouse comes within 120px, move button away smoothly
+    if (distance < 120) {
+        btnX += (rect.left - mouseX) * 0.3;
+        btnY += (rect.top - mouseY) * 0.3;
+
+        // Keep button inside screen
+        btnX = Math.max(0, Math.min(window.innerWidth - noBtn.offsetWidth, btnX));
+        btnY = Math.max(0, Math.min(window.innerHeight - noBtn.offsetHeight, btnY));
+
+        noBtn.style.left = btnX + 'px';
+        noBtn.style.top = btnY + 'px';
     }
+});
 
-    function yesClicked() {
-        document.body.innerHTML = `
-            <div class="result">
+function yesClicked() {
+    document.body.innerHTML = `
+        <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#ffe6f0;font-family:Arial;text-align:center;">
+            <div>
                 <h1 style="color:#ff4d88;">Now you are stuck with me for whole life 😈</h1>
-                <img src="evil.jpg" alt="Evil Photo"/>
+                <img src="evil.jpg" style="max-width:80%;border-radius:20px;margin-top:20px;">
             </div>
-        `;
-    }
+        </div>
+    `;
+}
 </script>
-
-</body>
-</html>
