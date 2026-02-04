@@ -40,6 +40,7 @@ button{
     border:none;
     border-radius:10px;
     cursor:pointer;
+    transition: transform 0.2s ease;
 }
 
 #yes{
@@ -65,12 +66,15 @@ button{
 
 <script>
 const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
 const card = document.getElementById("card");
+
+let yesScale = 1;
 
 // Initial placement
 moveNo();
 
-// DESKTOP: mouse near
+// DESKTOP mouse
 card.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
     const dx = rect.left - e.clientX;
@@ -78,23 +82,29 @@ card.addEventListener("mousemove", (e) => {
     const dist = Math.sqrt(dx*dx + dy*dy);
 
     if(dist < 100){
-        moveNo();
+        moveNoAndGrowYes();
     }
 });
 
-// MOBILE: intercept tap BEFORE it registers
+// MOBILE tap interception
 noBtn.addEventListener("touchstart", function(e){
-    e.preventDefault();  // stop tap
-    moveNo();
+    e.preventDefault();
+    moveNoAndGrowYes();
 });
 
-// Also block normal click just in case
+// Block normal click
 noBtn.addEventListener("click", function(e){
     e.preventDefault();
-    moveNo();
+    moveNoAndGrowYes();
 });
 
-// Function to move button inside card
+function moveNoAndGrowYes(){
+    moveNo();
+    yesScale += 0.15;
+    yesBtn.style.transform = `scale(${yesScale})`;
+}
+
+// Move No button inside card
 function moveNo(){
     const maxX = card.offsetWidth - noBtn.offsetWidth - 20;
     const maxY = card.offsetHeight - noBtn.offsetHeight - 20;
@@ -106,8 +116,8 @@ function moveNo(){
     noBtn.style.top = newY + "px";
 }
 
-// YES button
-document.getElementById("yes").addEventListener("click", function(){
+// YES button final sequence
+yesBtn.addEventListener("click", function(){
 
     document.body.innerHTML = "";
     document.body.style.background = "#ffe6f0";
@@ -127,7 +137,7 @@ document.getElementById("yes").addEventListener("click", function(){
 
     setTimeout(() => {
         const img = document.createElement("img");
-        img.src = "evil.jpg?v=7";
+        img.src = "evil.jpg?v=9";
         img.style.maxWidth = "80%";
         img.style.borderRadius = "20px";
         img.style.marginTop = "30px";
