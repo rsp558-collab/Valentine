@@ -1,59 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine?</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:#ffe6f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial, sans-serif;
+}
+
+.card{
+    position:relative;
+    width:420px;
+    height:300px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+    padding-top:40px;
+    overflow:hidden;
+}
+
+h1{
+    color:#ff4d88;
+}
+
+button{
+    padding:12px 24px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#yes{
+    background:#ff4d88;
+    color:white;
+    margin-top:30px;
+}
+
+#no{
+    position:absolute;
+    background:#ccc;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+    <h1>Will you be my Valentine? ❤️</h1>
+    <button id="yes" onclick="yesClicked()">Yes 💖</button>
+    <button id="no">No 🙈</button>
+</div>
+
 <script>
-const noBtn = document.getElementById('no');
-const card = document.querySelector('.card');
+const noBtn = document.getElementById("no");
+const card = document.getElementById("card");
 
-noBtn.style.position = "absolute";
+let x = 250;
+let y = 180;
 
-let posX = 120;
-let posY = 120;
+noBtn.style.left = x + "px";
+noBtn.style.top = y + "px";
 
-noBtn.style.left = posX + "px";
-noBtn.style.top = posY + "px";
-
-card.addEventListener("mousemove", (e) => {
-    const cardRect = card.getBoundingClientRect();
+card.addEventListener("mousemove", function(e){
     const btnRect = noBtn.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
 
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
-    const btnCenterX = btnRect.left + btnRect.width / 2;
-    const btnCenterY = btnRect.top + btnRect.height / 2;
+    const btnCenterX = btnRect.left + btnRect.width/2;
+    const btnCenterY = btnRect.top + btnRect.height/2;
 
     const dx = btnCenterX - mouseX;
     const dy = btnCenterY - mouseY;
 
-    const distance = Math.sqrt(dx * dx + dy * dy);
+    const dist = Math.sqrt(dx*dx + dy*dy);
 
-    // When cursor comes near, gently push button away
-    if (distance < 140) {
+    if(dist < 120){
         const angle = Math.atan2(dy, dx);
 
-        posX += Math.cos(angle) * 25;
-        posY += Math.sin(angle) * 25;
+        x += Math.cos(angle) * 20;
+        y += Math.sin(angle) * 20;
 
-        // Boundaries INSIDE the card
         const minX = 10;
-        const minY = 10;
-        const maxX = cardRect.width - btnRect.width - 10;
-        const maxY = cardRect.height - btnRect.height - 10;
+        const minY = 80;
+        const maxX = card.offsetWidth - btnRect.width - 10;
+        const maxY = card.offsetHeight - btnRect.height - 10;
 
-        posX = Math.max(minX, Math.min(maxX, posX));
-        posY = Math.max(minY, Math.min(maxY, posY));
+        x = Math.max(minX, Math.min(maxX, x));
+        y = Math.max(minY, Math.min(maxY, y));
 
-        noBtn.style.left = posX + "px";
-        noBtn.style.top = posY + "px";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
     }
 });
 
-function yesClicked() {
+function yesClicked(){
     document.body.innerHTML = `
-        <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#ffe6f0;font-family:Arial;text-align:center;">
-            <div>
-                <h1 style="color:#ff4d88;">Now you are stuck with me for whole life 😈</h1>
-                <img src="evil.jpg" style="max-width:80%;border-radius:20px;margin-top:20px;">
-            </div>
+    <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#ffe6f0;font-family:Arial;text-align:center;">
+        <div>
+            <h1 style="color:#ff4d88;">Now you are stuck with me for whole life 😈</h1>
+            <img src="evil.jpg" style="max-width:80%;border-radius:20px;margin-top:20px;">
         </div>
-    `;
+    </div>`;
 }
 </script>
+
+</body>
+</html>
