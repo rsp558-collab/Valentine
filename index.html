@@ -20,18 +20,24 @@ body{
     position:relative;
     width:90%;
     max-width:420px;
-    height:320px;
+    height:340px;
     background:white;
     border-radius:20px;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
     text-align:center;
-    padding-top:40px;
-    overflow:hidden;
+    padding-top:30px;
 }
 
 h1{
     color:#ff4d88;
     font-size:22px;
+}
+
+.btn-area{
+    position:relative;
+    width:100%;
+    height:180px;
+    margin-top:20px;
 }
 
 button{
@@ -46,7 +52,11 @@ button{
 #yes{
     background:#ff4d88;
     color:white;
-    margin-top:30px;
+    position:absolute;
+    left:50%;
+    top:20px;
+    transform:translateX(-50%) scale(1);
+    transform-origin:center;
 }
 
 #no{
@@ -60,14 +70,17 @@ button{
 
 <div class="card" id="card">
     <h1>Will you be my Valentine? ❤️</h1>
-    <button id="yes">Yes 💖</button>
-    <button id="no">No 🙈</button>
+
+    <div class="btn-area" id="btnArea">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 🙈</button>
+    </div>
 </div>
 
 <script>
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
-const card = document.getElementById("card");
+const area = document.getElementById("btnArea");
 
 let yesScale = 1;
 
@@ -75,7 +88,7 @@ let yesScale = 1;
 moveNo();
 
 // DESKTOP mouse
-card.addEventListener("mousemove", (e) => {
+area.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
     const dx = rect.left - e.clientX;
     const dy = rect.top - e.clientY;
@@ -92,7 +105,7 @@ noBtn.addEventListener("touchstart", function(e){
     moveNoAndGrowYes();
 });
 
-// Block normal click
+// Block click
 noBtn.addEventListener("click", function(e){
     e.preventDefault();
     moveNoAndGrowYes();
@@ -100,17 +113,20 @@ noBtn.addEventListener("click", function(e){
 
 function moveNoAndGrowYes(){
     moveNo();
-    yesScale += 0.15;
-    yesBtn.style.transform = `scale(${yesScale})`;
+
+    yesScale += 0.12;
+
+    // Keep YES inside the area visually
+    yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
 }
 
-// Move No button inside card
+// Move No button inside area
 function moveNo(){
-    const maxX = card.offsetWidth - noBtn.offsetWidth - 20;
-    const maxY = card.offsetHeight - noBtn.offsetHeight - 20;
+    const maxX = area.offsetWidth - noBtn.offsetWidth - 20;
+    const maxY = area.offsetHeight - noBtn.offsetHeight - 20;
 
     const newX = Math.random() * maxX + 10;
-    const newY = Math.random() * maxY + 70;
+    const newY = Math.random() * maxY + 40;
 
     noBtn.style.left = newX + "px";
     noBtn.style.top = newY + "px";
@@ -137,7 +153,7 @@ yesBtn.addEventListener("click", function(){
 
     setTimeout(() => {
         const img = document.createElement("img");
-        img.src = "evil.jpg?v=9";
+        img.src = "evil.jpg?v=11";
         img.style.maxWidth = "80%";
         img.style.borderRadius = "20px";
         img.style.marginTop = "30px";
