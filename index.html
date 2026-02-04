@@ -73,6 +73,7 @@ noBtn.style.top = y + "px";
 
 card.addEventListener("mousemove", function(e){
     const btnRect = noBtn.getBoundingClientRect();
+
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
@@ -103,39 +104,39 @@ card.addEventListener("mousemove", function(e){
     }
 });
 
-// -------- YES BUTTON DRAMATIC SEQUENCE --------
+// -------- YES BUTTON SEQUENCE (TEXT FIRST, IMAGE LATER) --------
 function yesClicked(){
+
+    // Show only the message first
     document.body.innerHTML = `
     <div style="
         display:flex;
         justify-content:center;
         align-items:center;
-        flex-direction:column;
         height:100vh;
         background:#ffe6f0;
         font-family:Arial;
         text-align:center;
+        flex-direction:column;
     ">
         <h1 id="msg" style="
             color:#ff4d88;
             font-size:48px;
-            margin-bottom:30px;
         ">
             Now you're stuck with me, baby 😈
         </h1>
-
-        <img id="evilImg" src="evil.jpg" style="
-            max-width:70%;
-            border-radius:20px;
-            opacity:0;
-            transition:opacity 2s ease;
-        ">
     </div>
     `;
 
-    // WAIT 3 seconds, THEN show image
+    // After 4 seconds, add the image
     setTimeout(() => {
-        document.getElementById("evilImg").style.opacity = "1";
+        const img = document.createElement("img");
+        img.src = "evil.jpg";
+        img.style.maxWidth = "70%";
+        img.style.borderRadius = "20px";
+        img.style.marginTop = "30px";
+
+        document.getElementById("msg").after(img);
     }, 4000);
 }
 </script>
